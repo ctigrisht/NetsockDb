@@ -63,7 +63,7 @@ namespace SharedLib.Models.Serialization
             var lines = GetValueLines(sdgdoc);
 
 
-
+            return default;
         }
 
         public static Tuple<string, SdgValue> ParseSdgLine(string line)
@@ -91,37 +91,58 @@ namespace SharedLib.Models.Serialization
                     break;
 
             }
+
+            return default;
         }
 
         static SdgValue ParseSTR(string val)
         {
+            var nval = val[(1)..(val.Length - 1)];
 
-            return default;
+            return new SdgValue()
+            {
+                Value = nval,
+                DataType = SdgType.str,
+                RuntimeType = typeof(string)
+            };
         }
 
         static SdgValue ParseNUM(string val)
         {
-
-            return default;
+            return new SdgValue()
+            {
+                Value = decimal.TryParse(val, out var cval) ? cval : 0,
+                DataType = SdgType.num,
+            };
         }
         static SdgValue ParseLNG(string val)
         {
-            var sdg = new SdgValue()
+            return new SdgValue()
             {
                 Value = long.TryParse(val, out var cval) ? cval : 0,
                 DataType = SdgType.lng,
+                RuntimeType = typeof(long)
             };
         }
 
         static SdgValue ParseDEC(string val)
         {
-
+            return new SdgValue()
+            {
+                Value = decimal.TryParse(val, out var cval) ? cval : 0,
+                DataType = SdgType.lng,
+                RuntimeType = typeof(decimal)
+            };
         }
 
         static SdgValue ParseBOL(string val)
         {
-
-            return default;
+            return new SdgValue()
+            {
+                Value = bool.TryParse(val, out var cval) ? new bool?(cval) : null,
+                DataType = SdgType.bol,
+                RuntimeType = typeof(bool)
+            };
         }
         static SdgValue ParseOBJ(string val)
         {
