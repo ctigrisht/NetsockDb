@@ -45,20 +45,20 @@ namespace SharedLib.Models.Serialization
 
     }
 
-    [System.AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = true)]
-    sealed class SdgKeyAttribute : System.Attribute
+    [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = true)]
+    sealed class SdgParamsAttribute : Attribute
     {
-        readonly KeyAttribute attribute;
+        readonly KeyAttribute[] attributes;
 
-        public SdgKeyAttribute(KeyAttribute attribute)
+        public SdgParamsAttribute(KeyAttribute[] attributes)
         {
-            this.attribute = attribute;
+            this.attributes = attributes;
 
         }
 
-        public KeyAttribute GetKeyAttribute
+        public KeyAttribute[] GetKeyAttribute
         {
-            get { return attribute; }
+            get { return attributes; }
         }
     }
 
@@ -94,7 +94,10 @@ namespace SharedLib.Models.Serialization
         /// </summary>
         sidx = 2,
 
-
+        /// <summary>
+        /// When deserializing, tries to find type and cast to the type
+        /// </summary>
+        cast = 20,
     }
 
     public enum SdgType
@@ -112,14 +115,58 @@ namespace SharedLib.Models.Serialization
         lid = 501,
 
         // basic
+
+        /// <summary>
+        /// string
+        /// </summary>
         str = 1,
+
+        /// <summary>
+        /// general purpose numeric value, can be unsafe if used in typed languages, so do proper data validation
+        /// </summary>
         num = 2,
+
+        /// <summary>
+        /// int16
+        /// </summary>
+        srt = 24,
+        /// <summary>
+        /// int32
+        /// </summary>
+        igr = 25,
+        /// <summary>
+        /// int64
+        /// </summary>
+        lng = 26,
+
+        /// <summary>
+        /// float
+        /// </summary>
+        flt = 27,
+
+        /// <summary>
+        /// double
+        /// </summary>
+        dbl = 28,
+
+        /// <summary>
+        /// decimal128
+        /// </summary>
+        dec = 31,
+
+        /// <summary>
+        /// boolean
+        /// </summary>
         bol = 3,
+
+        /// <summary>
+        /// object
+        /// </summary>
         obj = 4,
 
 
         // lists
-
+        lst = 10,
 
 
         // specialized

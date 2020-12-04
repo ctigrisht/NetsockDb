@@ -35,8 +35,109 @@ namespace SharedLib.Models.Serialization
         }
     }
 
-    public class DeserializationUtils
+    public static class DeserializationUtils
     {
+        public static string[] GetLines(string sdgstring)
+        {
+            var lines = sdgstring.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            var nlns = new string[0];
+            foreach (var line in lines)
+                nlns.Append(line.Trim());
+            return nlns;
+        }
+
+        public static string[] GetValueLines(string sdgdoc)
+        {
+            var lines = GetLines(sdgdoc);
+            var nls = new string[0];
+            foreach (var line in lines)
+            {
+                if (line.StartsWith("//")) continue;
+                nls.Append(line);
+            }
+            return nls;
+        }
+
+        public static Dictionary<string, SdgValue> ParseSdgDoc(this string sdgdoc)
+        {
+            var lines = GetValueLines(sdgdoc);
+
+
+
+        }
+
+        public static Tuple<string, SdgValue> ParseSdgLine(string line)
+        {
+            var value = new SdgValue();
+
+            var parts = line.Split('=');
+
+            var rawElems = parts[0].Split(' ');
+
+            var attribs = Array.FindAll(rawElems, x => x[0] is '#');
+            var elements = rawElems[(attribs.Length-1)..];
+            //var elements = Array.FindAll(rawElems, x => !attribs.Contains(x));
+            
+            var key = elements[0];
+            value.DataType = Enum.Parse<SdgType>(elements[1]);
+
+            switch (value.DataType)
+            {
+                case SdgType.str:
+                    value.Value = ParseSTR(parts[1]);
+                    break;
+                case SdgType.num:
+
+                    break;
+
+            }
+        }
+
+        static SdgValue ParseSTR(string val)
+        {
+
+            return default;
+        }
+
+        static SdgValue ParseNUM(string val)
+        {
+
+            return default;
+        }
+        static SdgValue ParseLNG(string val)
+        {
+            var sdg = new SdgValue()
+            {
+                Value = long.TryParse(val, out var cval) ? cval : 0,
+                DataType = SdgType.lng,
+            };
+        }
+
+        static SdgValue ParseDEC(string val)
+        {
+
+        }
+
+        static SdgValue ParseBOL(string val)
+        {
+
+            return default;
+        }
+        static SdgValue ParseOBJ(string val)
+        {
+
+            return default;
+        }
+        static SdgValue ParseGUID(string val)
+        {
+
+            return default;
+        }
+        static SdgValue ParseDYN(string val, bool tryCast = false)
+        {
+
+            return default;
+        }
 
     }
 
