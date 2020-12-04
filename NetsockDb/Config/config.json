@@ -1,0 +1,11 @@
+{
+  "host": {
+    "ip": "0.0.0.0:45023"
+  },
+  "storage": {
+    "meta": "/db/meta",
+    "data": "/db/data",
+    "cache": "/db/cache",
+    "index": "/db/index"
+  }
+}
